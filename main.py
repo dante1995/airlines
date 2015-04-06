@@ -16,15 +16,15 @@ class Counter(QFrame):
 
     def initUI(self):
 
-        while 1:
-            try:
-                self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-                break
-            except:
-                time.sleep(.1)
-                continue
-
-        self.cursor = self.db.cursor()
+        # while 1:
+        #     try:
+        #         self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
+        #         break
+        #     except:
+        #         time.sleep(.1)
+        #         continue
+        #
+        # self.cursor = self.db.cursor()
 
         self.roomno = QLabel("Room No")
         self.iroomno = QLineEdit()
