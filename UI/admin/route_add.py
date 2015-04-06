@@ -9,9 +9,9 @@ import sys
 import datetime
 
 
-class Counter(QFrame):
+class Route_Add(QFrame):
     def __init__(self):
-        super(Counter,self).__init__()
+        super(Route_Add,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -26,57 +26,45 @@ class Counter(QFrame):
         #
         # self.cursor = self.db.cursor()
 
-        self.roomno = QLabel("Room No")
-        self.iroomno = QLineEdit()
-        self.iroomno.setPlaceholderText("Enter New RoomNo")
-        self.building = QLabel("Building")
-        self.ibuilding = QLineEdit()
-        self.ibuilding.setPlaceholderText("Enter Building Name")
-        self.prps = QLabel("Purpose")
-        self.iprps = QComboBox()
-        self.iprps.addItem("select")
-        self.iprps.addItem("admit")
-        self.iprps.addItem("operation")
-        self.iprps.addItem("test")
-        self.iprps.addItem("checkup")
-        self.iprps.addItem("other")
-        self.dept = QLabel("Department")
-        self.idept = QLineEdit()
-        self.idept.setPlaceholderText("Enter Department Name")
+        self.rt = QLabel("Route ID")
+        self.irt = QLineEdit()
+        self.irt.setPlaceholderText("Enter Route ID")
+        self.src = QLabel("Source")
+        self.isrc = QLineEdit()
+        self.isrc.setPlaceholderText("Enter Source Airport")
+        self.to = QLabel("Destination")
+        self.ito = QLineEdit()
+        self.ito.setPlaceholderText("Enter Destination Airport")
         self.temp = QLabel("")
 
-        self.iroomno.setFixedWidth(200)
-        self.ibuilding.setFixedWidth(200)
-        self.iprps.setFixedWidth(200)
-        self.idept.setFixedWidth(350)
+        self.irt.setFixedWidth(200)
+        self.isrc.setFixedWidth(200)
+        self.ito.setFixedWidth(200)
 
-        self.roomno.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.building.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.prps.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.dept.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.rt.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.src.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.to.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         self.grid = QGridLayout()
-        self.grid.addWidget(self.roomno,0,0)
-        self.grid.addWidget(self.iroomno,0,1)
-        self.grid.addWidget(self.building,1,0)
-        self.grid.addWidget(self.ibuilding,1,1)
-        self.grid.addWidget(self.dept,2,0)
-        self.grid.addWidget(self.idept,2,1)
-        self.grid.addWidget(self.prps,3,0)
-        self.grid.addWidget(self.iprps,3,1)
-        self.grid.addWidget(self.temp,3,2)
+        self.grid.addWidget(self.rt,0,0)
+        self.grid.addWidget(self.irt,0,1)
+        self.grid.addWidget(self.src,1,0)
+        self.grid.addWidget(self.isrc,1,1)
+        self.grid.addWidget(self.to,2,0)
+        self.grid.addWidget(self.ito,2,1)
+        self.grid.addWidget(self.temp,2,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
-        self.enter = QPushButton("Enter")
-        self.enter.setStyleSheet("color: black; background-color:gray")
+        self.update = QPushButton("Update")
+        self.update.setStyleSheet("color: black; background-color:gray")
         self.reset.setStyleSheet("color: black; background-color:gray")
         self.cancel = QPushButton("Cancel")
         self.cancel.setStyleSheet("color: balck; background-color:gray")
 
         self.hbox.addStretch(1)
         self.hbox.addWidget(self.reset)
-        self.hbox.addWidget(self.enter)
+        self.hbox.addWidget(self.update)
         self.hbox.addWidget(self.cancel)
         self.hbox.addStretch(1)
 
@@ -87,7 +75,7 @@ class Counter(QFrame):
         self.setLayout(self.vbox)
 
 
-        self.connect(self.enter,SIGNAL("clicked()"),self.entry)
+        self.connect(self.update,SIGNAL("clicked()"),self.entry)
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_all)
         self.connect(self.cancel,SIGNAL("clicked()"),self.canceli)
 
@@ -148,6 +136,6 @@ class Counter(QFrame):
 
 
 app = QApplication(sys.argv)
-start = Counter()
+start = Route_Add()
 start.show()
 app.exec_()

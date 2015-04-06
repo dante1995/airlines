@@ -9,9 +9,9 @@ import sys
 import datetime
 
 
-class Counter(QFrame):
+class Flight_Add(QFrame):
     def __init__(self):
-        super(Counter,self).__init__()
+        super(Flight_Add,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -26,57 +26,52 @@ class Counter(QFrame):
         #
         # self.cursor = self.db.cursor()
 
-        self.roomno = QLabel("Room No")
-        self.iroomno = QLineEdit()
-        self.iroomno.setPlaceholderText("Enter New RoomNo")
-        self.building = QLabel("Building")
-        self.ibuilding = QLineEdit()
-        self.ibuilding.setPlaceholderText("Enter Building Name")
-        self.prps = QLabel("Purpose")
-        self.iprps = QComboBox()
-        self.iprps.addItem("select")
-        self.iprps.addItem("admit")
-        self.iprps.addItem("operation")
-        self.iprps.addItem("test")
-        self.iprps.addItem("checkup")
-        self.iprps.addItem("other")
-        self.dept = QLabel("Department")
-        self.idept = QLineEdit()
-        self.idept.setPlaceholderText("Enter Department Name")
+        self.fid = QLabel("Flight ID")
+        self.ifid = QLineEdit()
+        self.ifid.setPlaceholderText("Enter Flight ID")
+        self.fname = QLabel("Flight Name")
+        self.ifname = QLineEdit()
+        self.ifname.setPlaceholderText("Enter Flight Name")
+        self.aline = QLabel("Airline")
+        self.ialine = QLineEdit()
+        self.ialine.setPlaceholderText("Enter Airline Name")
+        self.cap = QLabel("Capacity")
+        self.icap = QLineEdit()
+        self.icap.setPlaceholderText("Enter Capacity")
         self.temp = QLabel("")
 
-        self.iroomno.setFixedWidth(200)
-        self.ibuilding.setFixedWidth(200)
-        self.iprps.setFixedWidth(200)
-        self.idept.setFixedWidth(350)
+        self.ifid.setFixedWidth(200)
+        self.ifname.setFixedWidth(200)
+        self.ialine.setFixedWidth(200)
+        self.icap.setFixedWidth(200)
 
-        self.roomno.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.building.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.prps.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.dept.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.fid.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.fname.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.aline.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.cap.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         self.grid = QGridLayout()
-        self.grid.addWidget(self.roomno,0,0)
-        self.grid.addWidget(self.iroomno,0,1)
-        self.grid.addWidget(self.building,1,0)
-        self.grid.addWidget(self.ibuilding,1,1)
-        self.grid.addWidget(self.dept,2,0)
-        self.grid.addWidget(self.idept,2,1)
-        self.grid.addWidget(self.prps,3,0)
-        self.grid.addWidget(self.iprps,3,1)
+        self.grid.addWidget(self.fid,0,0)
+        self.grid.addWidget(self.ifid,0,1)
+        self.grid.addWidget(self.fname,1,0)
+        self.grid.addWidget(self.ifname,1,1)
+        self.grid.addWidget(self.aline,2,0)
+        self.grid.addWidget(self.ialine,2,1)
+        self.grid.addWidget(self.cap,3,0)
+        self.grid.addWidget(self.icap,3,1)
         self.grid.addWidget(self.temp,3,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
-        self.enter = QPushButton("Enter")
-        self.enter.setStyleSheet("color: black; background-color:gray")
+        self.update = QPushButton("Update")
+        self.update.setStyleSheet("color: black; background-color:gray")
         self.reset.setStyleSheet("color: black; background-color:gray")
         self.cancel = QPushButton("Cancel")
         self.cancel.setStyleSheet("color: balck; background-color:gray")
 
         self.hbox.addStretch(1)
         self.hbox.addWidget(self.reset)
-        self.hbox.addWidget(self.enter)
+        self.hbox.addWidget(self.update)
         self.hbox.addWidget(self.cancel)
         self.hbox.addStretch(1)
 
@@ -87,7 +82,7 @@ class Counter(QFrame):
         self.setLayout(self.vbox)
 
 
-        self.connect(self.enter,SIGNAL("clicked()"),self.entry)
+        self.connect(self.update,SIGNAL("clicked()"),self.entry)
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_all)
         self.connect(self.cancel,SIGNAL("clicked()"),self.canceli)
 
@@ -148,6 +143,6 @@ class Counter(QFrame):
 
 
 app = QApplication(sys.argv)
-start = Counter()
+start = Flight_Add()
 start.show()
 app.exec_()
