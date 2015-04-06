@@ -5,7 +5,8 @@ import MySQLdb
 import time
 import sys
 import datetime
-from user import *
+from registration import *
+from after_log import *
 
 class user_start(QFrame):
     def __init__(self):
@@ -66,15 +67,25 @@ class user_start(QFrame):
         self.connect(self.signup,SIGNAL("clicked()"),self.signup_func)
 
     def login_func (self):
+        af = after_log()
+        af.exec_()
         self.db.close()
-        start.close()
+
 
     def signup_func(self):
-        start.close()
+        reg = registration()
+        reg.exec_()
 
 
+def main():
 
-app = QApplication(sys.argv)
-start = user_start()
-start.show()
-app.exec_()
+    app = QApplication(sys.argv)
+    start = user_start()
+    start.show()
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()
+
+

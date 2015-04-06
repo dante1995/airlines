@@ -5,11 +5,11 @@ import MySQLdb
 import time
 import sys
 import datetime
-from user import *
+from book_window import *
 
-class user_start(QFrame):
+class after_log(QDialog):
     def __init__(self):
-        super(user_start,self).__init__()
+        super(after_log,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -46,17 +46,14 @@ class user_start(QFrame):
 
 
     def book_func(self):
-        start.close()
+        book = book_window()
+        book.exec_()
+
 
     def cancel_func(self):
-        start.close()
+        x = 5
 
     def showtran_func(self):
-        start.close()
+        x = 5
 
 
-
-app = QApplication(sys.argv)
-start = user_start()
-start.show()
-app.exec_()

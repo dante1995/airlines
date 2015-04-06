@@ -7,9 +7,9 @@ import sys
 import datetime
 from user import *
 
-class user_start(QFrame):
+class book_window(QDialog):
     def __init__(self):
-        super(user_start,self).__init__()
+        super(book_window,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -85,7 +85,6 @@ class user_start(QFrame):
 
     def book_func (self):
         self.db.close()
-        start.close()
 
     def reset_func(self):
         self.ifro.clear()
@@ -94,7 +93,3 @@ class user_start(QFrame):
         self.ino_passengers.clear()
 
 
-app = QApplication(sys.argv)
-start = user_start()
-start.show()
-app.exec_()

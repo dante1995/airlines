@@ -9,7 +9,7 @@ import sys
 import datetime
 
 
-class registration(QFrame):
+class registration(QDialog):
     def __init__(self):
         super(registration,self).__init__()
         self.initUI()
@@ -18,7 +18,7 @@ class registration(QFrame):
 
         while 1:
             try:
-                self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
                 break
             except:
                 time.sleep(.1)
@@ -110,18 +110,32 @@ class registration(QFrame):
 
 
     def entry(self):
-        start.close()
+        name = str(self.iname.text())
+        addr = str(self.iaddress.text())
+        mob = str(self.imob.text())
+        uname = str(self.iuname.text())
+        pwd = str(self.ipasswd.text())
+        email = str(self.iemail.text())
+        gender = str(self.igender.currentText())
+        dob = " "
+        try:
+            self.cursor.execute("insert into user (user_id,password,name,phone,email_id,gender,dob)values('%s','%s','%s','%s','%s','%s','%s')"%(uname,pwd,name,mob,email,gender,dob))
+            self.db.commit()
+            self.reset_all()
+        except:
+            self.db.rollback()
+            message = QMessageBox(QMessageBox.Warning,"Prescribe Message","Some error occured. Try Again",buttons = QMessageBox.Close)
+            message.exec_()
 
+        self.close()
 
 
     def reset_all(self):
         self.iname.clear()
         self.iaddress.clear()
         self.imob.clear()
+        self.close()
 
 
 
-app = QApplication(sys.argv)
-start = registration()
-start.show()
-app.exec_()
+
