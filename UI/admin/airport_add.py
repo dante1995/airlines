@@ -9,9 +9,9 @@ import sys
 import datetime
 
 
-class Route_Add(QFrame):
+class Airport_Add(QFrame):
     def __init__(self):
-        super(Route_Add,self).__init__()
+        super(Airport_Add,self).__init__()
         self.initUI()
 
     def initUI(self):
@@ -26,33 +26,40 @@ class Route_Add(QFrame):
 
         self.cursor = self.db.cursor()
 
-        self.rt = QLabel("Route ID")
-        self.irt = QLineEdit()
-        self.irt.setPlaceholderText("Enter Route ID")
-        self.src = QLabel("Source")
-        self.isrc = QLineEdit()
-        self.isrc.setPlaceholderText("Enter Source Airport")
-        self.to = QLabel("Destination")
-        self.ito = QLineEdit()
-        self.ito.setPlaceholderText("Enter Destination Airport")
+        self.aid = QLabel("Airport ID")
+        self.iaid = QLineEdit()
+        self.iaid.setPlaceholderText("Enter Airport ID")
+        self.aname = QLabel("Airport Name")
+        self.ianame = QLineEdit()
+        self.ianame.setPlaceholderText("Enter Airport Name")
+        self.city = QLabel("City")
+        self.icity = QLineEdit()
+        self.icity.setPlaceholderText("Enter City Name")
+        self.state = QLabel("State")
+        self.istate = QLineEdit()
+        self.istate.setPlaceholderText("Enter State Name")
         self.temp = QLabel("")
 
-        self.irt.setFixedWidth(200)
-        self.isrc.setFixedWidth(200)
-        self.ito.setFixedWidth(200)
+        self.iaid.setFixedWidth(200)
+        self.ianame.setFixedWidth(200)
+        self.icity.setFixedWidth(200)
+        self.istate.setFixedWidth(200)
 
-        self.rt.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.src.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.to.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.aid.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.aname.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.city.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.state.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         self.grid = QGridLayout()
-        self.grid.addWidget(self.rt,0,0)
-        self.grid.addWidget(self.irt,0,1)
-        self.grid.addWidget(self.src,1,0)
-        self.grid.addWidget(self.isrc,1,1)
-        self.grid.addWidget(self.to,2,0)
-        self.grid.addWidget(self.ito,2,1)
-        self.grid.addWidget(self.temp,2,2)
+        self.grid.addWidget(self.aid,0,0)
+        self.grid.addWidget(self.iaid,0,1)
+        self.grid.addWidget(self.aname,1,0)
+        self.grid.addWidget(self.ianame,1,1)
+        self.grid.addWidget(self.city,2,0)
+        self.grid.addWidget(self.icity,2,1)
+        self.grid.addWidget(self.state,3,0)
+        self.grid.addWidget(self.istate,3,1)
+        self.grid.addWidget(self.temp,3,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
@@ -85,26 +92,27 @@ class Route_Add(QFrame):
         start.close()
 
     def entry(self):
-        id_route = str(self.irt.text())
-        source = str(self.isrc.text())
-        destination = str(self.ito.text())
+        airport_id = str(self.iaid.text())
+        airport_name = str(self.ianame.text())
+        city = str(self.icity.text())
+        state = str(self.istate.text())
 
-        if(len(source)) == 0 or len(destination)==0:
+        if(len(airport_name) == 0 or len(city)==0 or len(state)==0):
             message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
 
 
-        self.cursor.execute("select route_id from route")
+        self.cursor.execute("select airport_id from airport")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i]) == id_route:
-                message = QMessageBox(QMessageBox.Warning,"Error Message","This id_route in already entered. Try Again",buttons = QMessageBox.Close)
+            if str(result[i]) == airport_id:
+                message = QMessageBox(QMessageBox.Warning,"Error Message","This room in airport id entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return
 
         try:
-            self.cursor.execute("insert into route(route_id,source,destination) values('%s','%s','%s')"%(id_route,source,destination))
+            self.cursor.execute("insert into airport(airport_id,name,city,state) values('%s','%s','%s','%s')"%(airport_id,airport_name,city,state))
             self.db.commit()
             self.reset_all()
         except:
@@ -117,13 +125,14 @@ class Route_Add(QFrame):
 
 
     def reset_all(self):
-        self.irt.clear()
-        self.isrc.clear()
-        self.ito.clear()
+        self.iaid.clear()
+        self.ianame.clear()
+        self.icity.clear()
+        self.istate.clear()
 
 
 
 app = QApplication(sys.argv)
-start = Route_Add()
+start = Airport_Add()
 start.show()
 app.exec_()

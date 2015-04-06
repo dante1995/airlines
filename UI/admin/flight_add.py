@@ -16,15 +16,15 @@ class Flight_Add(QFrame):
 
     def initUI(self):
 
-        # while 1:
-        #     try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
-        #
-        # self.cursor = self.db.cursor()
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
+
+        self.cursor = self.db.cursor()
 
         self.fid = QLabel("Flight ID")
         self.ifid = QLineEdit()
@@ -92,37 +92,31 @@ class Flight_Add(QFrame):
         start.close()
 
     def entry(self):
-        room = str(self.iroomno.text())
-        building = str(self.ibuilding.text())
-        dept = str(self.idept.text())
-        prps = str(self.iprps.currentText())
+        id_flight = str(self.ifid.text())
+        flight_name = str(self.ifname.text())
+        airline = str(self.ialine.text())
+        capacity = str(self.icap.text())
 
-        if(len(room)) == 0 or len(building)==0:
+        if(len(flight_name) == 0 or len(airline))==0:
             message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
 
-        if(room.isdigit() == 0):
-            message = QMessageBox(QMessageBox.Warning,"Error Message","Room must be an integer. Try Again",buttons = QMessageBox.Close)
+        if(capacity.isdigit() == 0):
+            message = QMessageBox(QMessageBox.Warning,"Error Message","Capacity must be an integer. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
-        if(prps == "select"):
-            message = QMessageBox(QMessageBox.Warning,"Error Message","Please select Purpose of this room. Try Again",buttons = QMessageBox.Close)
-            message.exec_()
-            return
-        if len(dept) == 0:
-            dept = "NULL"
 
-        self.cursor.execute("select RoomNo,Building from Room")
+        self.cursor.execute("select flight_id from flight")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i][0]) == room and str(result[i][1]) == building:
-                message = QMessageBox(QMessageBox.Warning,"Error Message","This room in already entered. Try Again",buttons = QMessageBox.Close)
+            if str(result[i]) == id_flight:
+                message = QMessageBox(QMessageBox.Warning,"Error Message","This Flight id in already entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return
 
         try:
-            self.cursor.execute("insert into Room(RoomNo,Building,Department,Purpose) values('%s','%s','%s','%s')"%(room,building,dept,prps))
+            self.cursor.execute("insert into flight(flight_id,name,airline,capacity,available) values('%s','%s','%s','%s',%s)"%(id_flight,flight_name,airline,capacity,capacity))
             self.db.commit()
             self.reset_all()
         except:
@@ -135,10 +129,10 @@ class Flight_Add(QFrame):
 
 
     def reset_all(self):
-        self.iroomno.clear()
-        self.ibuilding.clear()
-        self.iprps.setCurrentIndex(0)
-        self.idept.clear()
+        self.ifid.clear()
+        self.ifname.clear()
+        self.ialine.clear()
+        self.icap.clear()
 
 
 
