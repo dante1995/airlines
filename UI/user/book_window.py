@@ -6,6 +6,7 @@ import time
 import sys
 import datetime
 from user import *
+from show_flights import *
 
 class book_window(QDialog):
     def __init__(self):
@@ -63,7 +64,7 @@ class book_window(QDialog):
         self.grid.addWidget(self.temp,3,2)
 
         self.hbox = QHBoxLayout()
-        self.book = QPushButton("Book")
+        self.book = QPushButton("Show flights")
         self.reset = QPushButton("Reset")
         self.book.setStyleSheet("color: black; background-color:gray")
         self.reset.setStyleSheet("color: black; background-color:gray")
@@ -84,12 +85,24 @@ class book_window(QDialog):
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_func)
 
     def book_func (self):
-        self.db.close()
-
+        sw = show_flights()
+        sw.exec_()
+        print "yo"
     def reset_func(self):
         self.ifro.clear()
         self.idest.clear()
         self.idate.clear()
         self.ino_passengers.clear()
+
+def main():
+
+    app = QApplication(sys.argv)
+    start = book_window()
+    start.show()
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()
 
 

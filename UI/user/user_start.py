@@ -7,6 +7,7 @@ import sys
 import datetime
 from registration import *
 from after_log import *
+# from UI.admin.start import*
 
 class user_start(QFrame):
     def __init__(self):

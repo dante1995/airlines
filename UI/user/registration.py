@@ -121,6 +121,7 @@ class registration(QDialog):
         try:
             self.cursor.execute("insert into user (user_id,password,name,phone,email_id,gender,dob)values('%s','%s','%s','%s','%s','%s','%s')"%(uname,pwd,name,mob,email,gender,dob))
             self.db.commit()
+            message = QMessageBox(QMessageBox.Warning,"Success","User added",buttons = QMessageBox.Close)
             self.reset_all()
         except:
             self.db.rollback()
