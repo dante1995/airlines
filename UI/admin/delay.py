@@ -41,9 +41,9 @@ class Delay(QFrame):
 
         self.setGeometry(250,250,500,500)
 
-        self.fid.setFixedWidth(200)
-        self.idate.setFixedWidth(200)
-        self.idelay.setFixedWidth(200)
+        #self.fid.setFixedWidth(200)
+        #self.idate.setFixedWidth(200)
+        #self.idelay.setFixedWidth(200)
 
         self.fid.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.date.setAlignment(Qt.AlignRight | Qt.AlignCenter)
@@ -74,8 +74,10 @@ class Delay(QFrame):
         self.hbox.addStretch(1)
 
         self.vbox = QVBoxLayout()
+        self.vbox.addStretch(1)
         self.vbox.addLayout(self.grid)
         self.vbox.addLayout(self.hbox)
+        self.vbox.addStretch(1)
 
         self.setLayout(self.vbox)
 
@@ -195,7 +197,7 @@ class Calendar(QDialog):
         # Calculate the date a week from now
         sevendays = timedelta(days=7)
         self.aweeklater = pydate
-#
+
 # def main():
 #
 #     app = QApplication(sys.argv)

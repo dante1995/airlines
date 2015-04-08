@@ -170,16 +170,16 @@ class Calendar(QDialog):
 
 
 
-# def main():
-#
-#     app = QApplication(sys.argv)
-#     start = book_window()
-#     start.show()
-#     app.exec_()
-#
-#
-# if __name__ == '__main__':
-#     main()
+def main():
+
+    app = QApplication(sys.argv)
+    start = book_window()
+    start.show()
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()
 
 
 
