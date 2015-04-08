@@ -93,11 +93,11 @@ class ticket(QDialog):
     #     x=3
 
 
-app = QApplication(sys.argv)
-start = ticket()
-start.show()
-app.exec_()
-
-
-if __name__ == '__main__':
-    main()
+# app = QApplication(sys.argv)
+# start = ticket()
+# start.show()
+# app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()
