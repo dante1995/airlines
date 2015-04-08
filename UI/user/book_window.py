@@ -9,8 +9,9 @@ from user import *
 from show_flights import *
 
 class book_window(QDialog):
-    def __init__(self):
+    def __init__(self,uid):
         super(book_window,self).__init__()
+        self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -89,7 +90,7 @@ class book_window(QDialog):
         self.des = self.idest.text()
         self.src = self.ifro.text()
         self.dt = self.idate.text()
-        sw = show_flights(self.no,self.des,self.src,self.dt)
+        sw = show_flights(self.uid,self.no,self.des,self.src,self.dt)
 
 
         sw.exec_()
@@ -99,6 +100,7 @@ class book_window(QDialog):
         self.idest.clear()
         self.idate.clear()
         self.ino_passengers.clear()
+
 
     def get_data(self,model):
 
@@ -117,5 +119,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
 

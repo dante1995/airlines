@@ -12,8 +12,9 @@ from show_flights import *
 from ticket import *
 
 class passenger_entry(QDialog):
-    def __init__(self,id,no):
+    def __init__(self,uid,id,no):
         super(passenger_entry,self).__init__()
+        self.uid = uid
         self.id = str(id)
         self.no = str(no)
         print "my id is: " + self.id
@@ -103,8 +104,8 @@ class passenger_entry(QDialog):
 
         sql = "insert into booking values(%s,%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(self.no) + "\"","\"" + str(self.id) + "\"")
         self.cursor.execute(sql)
-        user_id = 2
-        sql = "insert into user_book values (%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(user_id) + "\"")
+
+        sql = "insert into user_book values (%s,%s);"%("\"" + str(self.uid) + "\"","\"" + str(booking_id) + "\"")
         self.cursor.execute(sql)
 
         id = int(size)+1
@@ -113,25 +114,13 @@ class passenger_entry(QDialog):
             print sql
             self.cursor.execute(sql)
             sql = "insert into passenger_book values (%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(id+i) + "\"")
+            self.cursor.execute(sql)
+
         sql = "update schedule set available = "+(str(available - int(self.no)))+" where schedule_id = \"" + str(self.id)+"\";"
         self.cursor.execute(sql)
         self.db.commit()
-        tick = ticket()
+        tick = ticket(booking_id,self.id)
         tick.exec_()
-        # print names,ages,genders,seniors
+
     def cancel_func(self):
         self.close()
-        x=3
-
-
-#
-# def main():
-#
-#     app = QApplication(sys.argv)
-#     start = passenger_entry(2,1)
-#     start.show()
-#     app.exec_()
-#
-#
-# if __name__ == '__main__':
-#     main()
