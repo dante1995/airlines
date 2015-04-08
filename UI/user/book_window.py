@@ -9,9 +9,9 @@ from user import *
 from show_flights import *
 
 class book_window(QDialog):
-    def __init__(self,uid):
+    def __init__(self):
         super(book_window,self).__init__()
-        self.uid = uid
+        #self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -25,13 +25,21 @@ class book_window(QDialog):
                 continue
 
         self.cursor = self.db.cursor()
+        completer = QCompleter()
+
+        model = QStringListModel()
+        completer.setModel(model)
+        self.get_data(model)
 
         self.fro = QLabel("From")
         self.ifro = QLineEdit()
+        self.ifro.setCompleter(completer)
+
         self.ifro.setPlaceholderText("Enter Start Airport")
 
         self.dest = QLabel("To")
         self.idest = QLineEdit()
+        self.idest.setCompleter(completer)
         self.idest.setPlaceholderText("Enter Destination Airport")
 
         self.date = QLabel("Date")
@@ -103,22 +111,26 @@ class book_window(QDialog):
 
 
     def get_data(self,model):
-
         self.cursor.execute("select distinct city from airport;")
         result = self.cursor.fetchall()
-        print result
+        data = []
+        for x in result:
+            data.append(x[0])
+        print data
+        model.setStringList(data)
 
 
-def main():
 
-    app = QApplication(sys.argv)
-    start = book_window()
-    start.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#
+#     app = QApplication(sys.argv)
+#     start = book_window()
+#     start.show()
+#     app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()
 
 
 
