@@ -6,7 +6,8 @@ import time
 import sys
 import datetime
 from book_window import *
-
+from cancel_window import *
+from book_history import *
 class after_log(QDialog):
     def __init__(self,uid):
         super(after_log,self).__init__()
@@ -58,7 +59,9 @@ class after_log(QDialog):
 
 
     def cancel_func(self):
-        x = 5
+        can = cancel_window(self.uid)
+        can.exec_()
 
     def showtran_func(self):
-        x = 5
+        book_hist = book_history(self.uid)
+        book_hist.exec_()

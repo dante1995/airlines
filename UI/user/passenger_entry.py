@@ -92,11 +92,15 @@ class passenger_entry(QDialog):
         available = self.cursor.fetchall()
         available = (int(available[0][0]))
 
-        sql = "select passenger_id from passenger;"
+        sql = "select seat from passenger natural join passenger_book natural join booking natural join schedule where schedule_id = \"" +str(self.id) +"\";"
         self.cursor.execute(sql)
         passengers = self.cursor.fetchall()
         size = len(passengers)
 
+        tmp = []
+        for i in passengers:
+            tmp.append(int(i[0]))
+        print tmp
         sql = "select booking_id from booking;"
         self.cursor.execute(sql)
         bookings = self.cursor.fetchall()
@@ -107,10 +111,20 @@ class passenger_entry(QDialog):
 
         sql = "insert into user_book values (%s,%s);"%("\"" + str(self.uid) + "\"","\"" + str(booking_id) + "\"")
         self.cursor.execute(sql)
-
+        seat = -1
+        sql = "select passenger_id from passenger;"
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+        size = len(res)
         id = int(size)+1
         for i in range(int(self.no)):
-            sql = "insert into passenger values (%s,%s,%s,%s,%s,%s);"%("\""+str(id+i)+"\"","\""+str(names[i])+"\"","\""+str(ages[i])+"\"","\""+str(genders[i])+"\"","\""+str(seniors[i])+"\"","\""+str(available-i)+"\"")
+            for yu in range(1,1000):
+                if yu not in tmp:
+                    seat = yu
+                    tmp.append(yu)
+                    break
+
+            sql = "insert into passenger values (%s,%s,%s,%s,%s,%s);"%("\""+str(id+i)+"\"","\""+str(names[i])+"\"","\""+str(ages[i])+"\"","\""+str(genders[i])+"\"","\""+str(seniors[i])+"\"","\""+str(seat)+"\"")
             print sql
             self.cursor.execute(sql)
             sql = "insert into passenger_book values (%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(id+i) + "\"")
@@ -124,3 +138,8 @@ class passenger_entry(QDialog):
 
     def cancel_func(self):
         self.close()
+
+# app = QApplication(sys.argv)
+# start = passenger_entry("ab12","QE356201","2")
+# start.show()
+# app.exec_()
