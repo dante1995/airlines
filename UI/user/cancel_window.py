@@ -17,51 +17,58 @@ class cancel_window(QDialog):
 
     def initUI(self):
 
-        # while 1:
-        # try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
 
-        # self.cursor = self.db.cursor()
-        flights = ['dasd','fdgvdf ','dfewrf']
-        # source = ['dsv','fv','fv']
-        # dest = ['vcfsd','vd','dsvc']
-
-
+        self.cursor = self.db.cursor()
         self.grid = QGridLayout()
-        size = len(flights)
 
 
-        #self.ok = QPushButton("Book Now")
-        self.cancel = QPushButton("Cancel")
 
-        #self.connect(self.ok,SIGNAL("clicked()"),self.ok_func)
-        #self.connect(self.cancel,SIGNAL("clicked()"),self.cancel_func)
+        self.cancelTicket = QPushButton("Cancel Ticket")
+        self.close_ = QPushButton("Close")
+
+        self.connect(self.cancelTicket,SIGNAL("clicked()"),self.cancel_ticket)
+        self.connect(self.close_,SIGNAL("clicked()"),self.close_func)
         #
+
+        try:
+            self.cursor.execute("select user_id,flight_id,num_seats,flight_date,arrival,departure from user natural join user_book natural join booking natural join schedule where user_id = \"ab12\";")
+            user_result = self.cursor.fetchall()
+            #print user_result
+            #print len(user_result)
+        except:
+            print "Error"
+
         self.setGeometry(250,250,500,500)
         # self.setLayout(self.grid)
         self.table = QTableWidget()
-        self.table.setRowCount(size)
-        self.table.setColumnCount(5)
-        self.table.setHorizontalHeaderLabels(QString("Book ID;Flight No.;#Passengers ;Date;Time").split(";"));
+        self.table.setRowCount(len(user_result))
+        self.table.setColumnCount(6)
+        self.table.setHorizontalHeaderLabels(QString("Book ID;Flight No.;#Passengers ;Date;Arrival;Departure").split(";"));
 
         self.table.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         self.table.resizeColumnsToContents()
 
-        # for i in range(size):
-        #     self.table.setItem(i,0,QTableWidgetItem(flights[i]))
-        #     self.table.setItem(i,1,QTableWidgetItem(source[i]))
-        #     self.table.setItem(i,2,QTableWidgetItem(dest[i]))
-        #     self.table.setItem(i,3,QTableWidgetItem("100"))
-        #     self.table.setItem(i,4,QTableWidgetItem("10:00"))
+
+        for i in range(len(user_result)):
+            self.table.setItem(i,0,QTableWidgetItem(user_result[i][0]))
+            self.table.setItem(i,1,QTableWidgetItem(user_result[i][1]))
+            self.table.setItem(i,2,QTableWidgetItem(str(user_result[i][2])))
+            self.table.setItem(i,3,QTableWidgetItem(str(user_result[i][3])))
+            self.table.setItem(i,4,QTableWidgetItem(str(user_result[i][4])))
+            self.table.setItem(i,5,QTableWidgetItem(str(user_result[i][5])))
 
 
         self.grid.addWidget(self.table,0,0,1,-1)
-        # self.grid.addWidget(self.ok,1,3,1,1)
-        self.grid.addWidget(self.cancel,1,4,1,1)
+        self.grid.addWidget(self.cancelTicket,1,3,1,1)
+        self.grid.addWidget(self.close_,1,4,1,1)
+
         self.setLayout(self.grid)
 
     # def ok_func(self):
@@ -69,9 +76,12 @@ class cancel_window(QDialog):
     #     pass_ent = passenger_entry(self.id)
     #     pass_ent.exec_()
     #     print "ticket"
-    def cancel_func(self):
-         self.close()
-         x=3
+    def close_func(self):
+        self.close()
+
+    def cancel_ticket(self):
+        pass
+
 
 
 app = QApplication(sys.argv)
