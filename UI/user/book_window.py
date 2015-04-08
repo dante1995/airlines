@@ -7,11 +7,12 @@ import sys
 import datetime
 from user import *
 from show_flights import *
-
+from datetime import timedelta
+global gl_date
 class book_window(QDialog):
-    def __init__(self):
+    def __init__(self,uid):
         super(book_window,self).__init__()
-        #self.uid = uid
+        self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -45,9 +46,10 @@ class book_window(QDialog):
         self.date = QLabel("Date")
         self.idate = QLineEdit()
 
+
         self.no_passengers = QLabel("No of passengers")
         self.ino_passengers = QLineEdit()
-
+        self.cal = QPushButton()
         self.temp = QLabel("")
 
 
@@ -68,6 +70,7 @@ class book_window(QDialog):
         self.grid.addWidget(self.idest,1,1)
         self.grid.addWidget(self.date,2,0)
         self.grid.addWidget(self.idate,2,1)
+        self.grid.addWidget(self.cal,2,2)
         self.grid.addWidget(self.no_passengers,3,0)
         self.grid.addWidget(self.ino_passengers,3,1)
         self.grid.addWidget(self.temp,3,2)
@@ -92,6 +95,7 @@ class book_window(QDialog):
 
         self.connect(self.book,SIGNAL("clicked()"),self.book_func)
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_func)
+        self.connect(self.cal,SIGNAL("clicked()"),self.cal_func)
 
     def book_func (self):
         self.no = self.ino_passengers.text()
@@ -109,7 +113,11 @@ class book_window(QDialog):
         self.idate.clear()
         self.ino_passengers.clear()
 
-
+    def cal_func(self):
+        print "yo"
+        gui = Calendar()
+        gui.exec_()
+        self.idate.setText(str(gui.aweeklater))
     def get_data(self,model):
         self.cursor.execute("select distinct city from airport;")
         result = self.cursor.fetchall()
@@ -118,6 +126,47 @@ class book_window(QDialog):
             data.append(x[0])
         print data
         model.setStringList(data)
+
+class Calendar(QDialog):
+    """
+    A QCalendarWidget example
+    """
+
+    def __init__(self):
+        # create GUI
+        QtGui.QMainWindow.__init__(self)
+        self.setWindowTitle('Calendar widget')
+        # Set the window dimensions
+        self.resize(300,100)
+
+        # vertical layout for widgets
+        self.vbox = QtGui.QVBoxLayout()
+        self.setLayout(self.vbox)
+
+        # Create a calendar widget and add it to our layout
+        self.cal = QtGui.QCalendarWidget()
+        self.vbox.addWidget(self.cal)
+
+        # Create a label which we will use to show the date a week from now
+        self.lbl = QtGui.QLabel()
+        self.vbox.addWidget(self.lbl)
+
+        # Connect the clicked signal to the centre handler
+        self.connect(self.cal, QtCore.SIGNAL('selectionChanged()'), self.date_changed)
+
+    def date_changed(self):
+        """
+        Handler called when the date selection has changed
+        """
+        # Fetch the currently selected date, this is a QDate object
+        date = self.cal.selectedDate()
+
+        # This is a gives us the date contained in the QDate as a native
+        # python date[time] object
+        pydate = date.toPyDate()
+        # Calculate the date a week from now
+        sevendays = timedelta(days=7)
+        self.aweeklater = pydate
 
 
 
