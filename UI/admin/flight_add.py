@@ -1,4 +1,4 @@
-__author__ = 'sabya'
+__author__ = 'inzamam'
 
 
 from PyQt4.QtCore import *
@@ -39,6 +39,8 @@ class Flight_Add(QFrame):
         self.icap = QLineEdit()
         self.icap.setPlaceholderText("Enter Capacity")
         self.temp = QLabel("")
+
+        self.setGeometry(250,250,500,500)
 
         self.ifid.setFixedWidth(200)
         self.ifname.setFixedWidth(200)
@@ -110,13 +112,13 @@ class Flight_Add(QFrame):
         self.cursor.execute("select flight_id from flight")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i]) == id_flight:
+            if str(result[i][0]) == id_flight:
                 message = QMessageBox(QMessageBox.Warning,"Error Message","This Flight id in already entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return
 
         try:
-            self.cursor.execute("insert into flight(flight_id,name,airline,capacity,available) values('%s','%s','%s','%s',%s)"%(id_flight,flight_name,airline,capacity,capacity))
+            self.cursor.execute("insert into flight(flight_id,airline,capacity,available) values('%s','%s','%s',%s)"%(id_flight,airline,capacity,capacity))
             self.db.commit()
             self.reset_all()
         except:

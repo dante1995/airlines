@@ -106,15 +106,5 @@ class show_flights(QDialog):
 
     def cancel_func(self):
         self.close()
+        x=3
 
-
-def main():
-    app = QApplication(sys.argv)
-    start = show_flights()
-    start.show()
-    app.exec_()
-
-
-
-if __name__ == '__main__':
-    main()
