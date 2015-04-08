@@ -32,6 +32,7 @@ class user_start(QFrame):
 
         self.password = QLabel("Password")
         self.ipassword = QLineEdit()
+        self.ipassword.setEchoMode(QLineEdit.Password)
         self.temp = QLabel("")
 
 
@@ -68,6 +69,7 @@ class user_start(QFrame):
         self.connect(self.signup,SIGNAL("clicked()"),self.signup_func)
 
     def login_func (self):
+        print self.ipassword.text()
         uid = str(self.iid.text())
         af = after_log(uid)
         af.exec_()

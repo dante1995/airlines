@@ -11,8 +11,9 @@ from book_window import *
 from passenger_entry import *
 
 class book_history(QDialog):
-    def __init__(self):
+    def __init__(self,uid):
         super(book_history,self).__init__()
+        self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -35,7 +36,7 @@ class book_history(QDialog):
         #
 
         try:
-            self.cursor.execute("select user_id,flight_id,num_seats,flight_date,arrival,departure from user natural join user_book natural join booking natural join schedule where user_id = \"ab12\";")
+            self.cursor.execute("select user_id,flight_id,num_seats,flight_date,arrival,departure from user_book natural join booking natural join schedule where user_id = \""+str(self.uid)+"\";")
             user_result = self.cursor.fetchall()
             #print user_result
             #print len(user_result)
@@ -77,13 +78,13 @@ class book_history(QDialog):
     def cancel_func(self):
         self.close()
 
-
-
-app = QApplication(sys.argv)
-start = book_history()
-start.show()
-app.exec_()
-
-
-if __name__ == '__main__':
-    main()
+#
+#
+# app = QApplication(sys.argv)
+# start = book_history()
+# start.show()
+# app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()

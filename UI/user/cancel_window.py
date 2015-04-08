@@ -1,3 +1,4 @@
+from UI.user import cancel_ticket
 
 __author__ = 'sabya'
 from PyQt4.QtCore import *
@@ -9,10 +10,12 @@ import sys
 import datetime
 from book_window import *
 from passenger_entry import *
+from cancel_ticket import *
 
 class cancel_window(QDialog):
-    def __init__(self):
+    def __init__(self,uid):
         super(cancel_window,self).__init__()
+        self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -33,14 +36,14 @@ class cancel_window(QDialog):
         self.cancelTicket = QPushButton("Cancel Ticket")
         self.close_ = QPushButton("Close")
 
-        self.connect(self.cancelTicket,SIGNAL("clicked()"),self.cancel_ticket)
+        self.connect(self.cancelTicket,SIGNAL("clicked()"),self.cancel_tick)
         self.connect(self.close_,SIGNAL("clicked()"),self.close_func)
         #
 
         try:
-            self.cursor.execute("select user_id,flight_id,num_seats,flight_date,arrival,departure from user natural join user_book natural join booking natural join schedule where user_id = \"ab12\";")
+            self.cursor.execute("select booking_id,flight_id,num_seats,flight_date,arrival,departure,schedule_id from user_book natural join booking natural join schedule where user_id = \""+str(self.uid)+"\";")
             user_result = self.cursor.fetchall()
-            #print user_result
+            print user_result
             #print len(user_result)
         except:
             print "Error"
@@ -49,8 +52,8 @@ class cancel_window(QDialog):
         # self.setLayout(self.grid)
         self.table = QTableWidget()
         self.table.setRowCount(len(user_result))
-        self.table.setColumnCount(6)
-        self.table.setHorizontalHeaderLabels(QString("Book ID;Flight No.;#Passengers ;Date;Arrival;Departure").split(";"));
+        self.table.setColumnCount(7)
+        self.table.setHorizontalHeaderLabels(QString("Book ID;Flight No.;#Passengers ;Date;Arrival;Departure;Schedule ID").split(";"));
 
         self.table.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         self.table.resizeColumnsToContents()
@@ -63,6 +66,7 @@ class cancel_window(QDialog):
             self.table.setItem(i,3,QTableWidgetItem(str(user_result[i][3])))
             self.table.setItem(i,4,QTableWidgetItem(str(user_result[i][4])))
             self.table.setItem(i,5,QTableWidgetItem(str(user_result[i][5])))
+            self.table.setItem(i,6,QTableWidgetItem(str(user_result[i][6])))
 
 
         self.grid.addWidget(self.table,0,0,1,-1)
@@ -79,13 +83,18 @@ class cancel_window(QDialog):
     def close_func(self):
         self.close()
 
-    def cancel_ticket(self):
-        pass
+    def cancel_tick(self):
+        row =  self.table.currentRow()
+        schedule_id = self.table.item(row,6).text()
+        schedule_id = str(schedule_id)
+        booking_id = self.table.item(row,0).text()
+        booking_id = str(booking_id)
+        tick = cancel_ticket(booking_id,schedule_id)
+        tick.exec_()
 
-
-
-app = QApplication(sys.argv)
-start = cancel_window()
-start.show()
-app.exec_()
+#
+# app = QApplication(sys.argv)
+# start = cancel_window()
+# start.show()
+# app.exec_()
 
