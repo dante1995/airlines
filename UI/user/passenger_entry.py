@@ -9,6 +9,8 @@ import sys
 import datetime
 from book_window import *
 from show_flights import *
+from ticket import *
+
 class passenger_entry(QDialog):
     def __init__(self,id,no):
         super(passenger_entry,self).__init__()
@@ -20,15 +22,15 @@ class passenger_entry(QDialog):
 
     def initUI(self):
 
-        # while 1:
-        # try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
 
-        # self.cursor = self.db.cursor()
+        self.cursor = self.db.cursor()
 
 
         # print "efvfdvfdgvdv"
@@ -46,15 +48,17 @@ class passenger_entry(QDialog):
         # self.setLayout(self.grid)
         self.table = QTableWidget()
         self.table.setRowCount(int(self.no))
-        self.table.setColumnCount(3)
-        self.table.setHorizontalHeaderLabels(QString("Name;Age;Gender").split(";"));
-        for i in range(10):
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(QString("Name;Age;Gender;Senior Citizen").split(";"));
+        for i in range(int(self.no)):
             self.gender = QComboBox()
             self.gender.addItem("Male")
             self.gender.addItem("Female")
-
+            self.dis = QComboBox()
+            self.dis.addItem("Yes")
+            self.dis.addItem("No")
             self.table.setCellWidget(i,2,self.gender)
-
+            self.table.setCellWidget(i,3,self.dis)
 
         self.table.horizontalHeader().setResizeMode(QtGui.QHeaderView.Stretch)
         self.table.resizeColumnsToContents()
@@ -67,33 +71,67 @@ class passenger_entry(QDialog):
         self.setLayout(self.grid)
 
     def ok_func(self):
-        self.names = []
-        self.ages = []
-        self.genders = []
-        for i in range(int(self.no)):
-            name = ""
-            gender = ""
-            age = ""
-            name = self.table.item(i,0)
-            gender = self.table.item(i,2)
-            age = self.table.item(i,1)
-            print name,age,gender
-            print name.text(),age.text(),gender.text()
-        # print self.names,self.ages,self.genders
+        names = []
+        ages = []
+        genders = []
+        seniors = []
+        allRows = self.table.rowCount()
+        for row in xrange(0, allRows):
+            name = self.table.item(row,0).text()
+            age = self.table.item(row,1).text()
+            gender = self.table.cellWidget(row,2).currentText()
+            senior = self.table.cellWidget(row,3).currentText()
+            names.append(str(name))
+            ages.append(str(age))
+            genders.append(str(gender))
+            seniors.append(str(senior))
+        sql = "select available from schedule where schedule_id = \"" +str(self.id)+ "\";"
+        print sql
+        self.cursor.execute(sql)
+        available = self.cursor.fetchall()
+        available = (int(available[0][0]))
 
+        sql = "select passenger_id from passenger;"
+        self.cursor.execute(sql)
+        passengers = self.cursor.fetchall()
+        size = len(passengers)
+
+        sql = "select booking_id from booking;"
+        self.cursor.execute(sql)
+        bookings = self.cursor.fetchall()
+        booking_id = len(bookings) + 1
+
+        sql = "insert into booking values(%s,%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(self.no) + "\"","\"" + str(self.id) + "\"")
+        self.cursor.execute(sql)
+        user_id = 2
+        sql = "insert into user_book values (%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(user_id) + "\"")
+        self.cursor.execute(sql)
+
+        id = int(size)+1
+        for i in range(int(self.no)):
+            sql = "insert into passenger values (%s,%s,%s,%s,%s,%s);"%("\""+str(id+i)+"\"","\""+str(names[i])+"\"","\""+str(ages[i])+"\"","\""+str(genders[i])+"\"","\""+str(seniors[i])+"\"","\""+str(available-i)+"\"")
+            print sql
+            self.cursor.execute(sql)
+            sql = "insert into passenger_book values (%s,%s);"%("\"" + str(booking_id) + "\"","\"" + str(id+i) + "\"")
+        sql = "update schedule set available = "+(str(available - int(self.no)))+" where schedule_id = \"" + str(self.id)+"\";"
+        self.cursor.execute(sql)
+        self.db.commit()
+        tick = ticket()
+        tick.exec_()
+        # print names,ages,genders,seniors
     def cancel_func(self):
         self.close()
         x=3
 
 
-
-def main():
-
-    app = QApplication(sys.argv)
-    start = passenger_entry(2,4)
-    start.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
+#
+# def main():
+#
+#     app = QApplication(sys.argv)
+#     start = passenger_entry(2,1)
+#     start.show()
+#     app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()
