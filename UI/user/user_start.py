@@ -68,7 +68,8 @@ class user_start(QFrame):
         self.connect(self.signup,SIGNAL("clicked()"),self.signup_func)
 
     def login_func (self):
-        af = after_log()
+        uid = str(self.iid.text())
+        af = after_log(uid)
         af.exec_()
         self.db.close()
 

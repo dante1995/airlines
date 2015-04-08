@@ -11,26 +11,35 @@ from show_flights import *
 class book_window(QDialog):
     def __init__(self):
         super(book_window,self).__init__()
+        #self.uid = uid
         self.initUI()
 
     def initUI(self):
 
-        # while 1:
-        #     try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
 
-        # self.cursor = self.db.cursor()
+        self.cursor = self.db.cursor()
+        completer = QCompleter()
+
+        model = QStringListModel()
+        completer.setModel(model)
+        self.get_data(model)
 
         self.fro = QLabel("From")
         self.ifro = QLineEdit()
+        self.ifro.setCompleter(completer)
+
         self.ifro.setPlaceholderText("Enter Start Airport")
 
         self.dest = QLabel("To")
         self.idest = QLineEdit()
+        self.idest.setCompleter(completer)
         self.idest.setPlaceholderText("Enter Destination Airport")
 
         self.date = QLabel("Date")
@@ -89,7 +98,7 @@ class book_window(QDialog):
         self.des = self.idest.text()
         self.src = self.ifro.text()
         self.dt = self.idate.text()
-        sw = show_flights(self.no,self.des,self.src,self.dt)
+        sw = show_flights(self.uid,self.no,self.des,self.src,self.dt)
 
 
         sw.exec_()
@@ -100,15 +109,28 @@ class book_window(QDialog):
         self.idate.clear()
         self.ino_passengers.clear()
 
-def main():
 
-    app = QApplication(sys.argv)
-    start = book_window()
-    start.show()
-    app.exec_()
+    def get_data(self,model):
+        self.cursor.execute("select distinct city from airport;")
+        result = self.cursor.fetchall()
+        data = []
+        for x in result:
+            data.append(x[0])
+        print data
+        model.setStringList(data)
 
 
-if __name__ == '__main__':
-    main()
+
+# def main():
+#
+#     app = QApplication(sys.argv)
+#     start = book_window()
+#     start.show()
+#     app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()
+
 
 

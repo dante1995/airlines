@@ -71,11 +71,6 @@ class cancel_window(QDialog):
 
         self.setLayout(self.grid)
 
-    # def ok_func(self):
-    #     self.id =  self.table.currentItem().text()
-    #     pass_ent = passenger_entry(self.id)
-    #     pass_ent.exec_()
-    #     print "ticket"
     def close_func(self):
         self.close()
 
@@ -89,6 +84,3 @@ start = cancel_window()
 start.show()
 app.exec_()
 
-
-if __name__ == '__main__':
-    main()

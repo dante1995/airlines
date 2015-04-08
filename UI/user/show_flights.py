@@ -9,9 +9,10 @@ import sys
 import datetime
 from passenger_entry import *
 class show_flights(QDialog):
-    def __init__(self,no,dest,source,date):
+    def __init__(self,uid,no,dest,source,date):
         super(show_flights,self).__init__()
         self.no = str(no)
+        self.uid = uid
         # dest = "aurangabad"
         # source = "chandigarh"
         # date = "2015-05-09"
@@ -47,15 +48,12 @@ class show_flights(QDialog):
         print sql
         self.cursor.execute(sql)
         results = self.cursor.fetchall()
-        print results
+        # print results
         # print str(results[0][1])
         # print str(results[0][2])
         #
         # print str(results[0][3])
 
-        flights = ['dasd','fdgvdf ','dfewrf']
-        source = ['dsv','fv','fv']
-        dest = ['vcfsd','vd','dsvc']
 
 
         self.grid = QGridLayout()
@@ -100,9 +98,9 @@ class show_flights(QDialog):
         schedule_id = self.table.item(row,7).text()
         schedule_id = str(schedule_id)
         print schedule_id
-        pass_ent = passenger_entry(schedule_id, self.no)
+        pass_ent = passenger_entry(self.uid,schedule_id, self.no)
         pass_ent.exec_()
-        print "ticket"
+        # print "ticket"
 
     def cancel_func(self):
         self.close()
