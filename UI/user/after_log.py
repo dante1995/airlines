@@ -8,8 +8,9 @@ import datetime
 from book_window import *
 
 class after_log(QDialog):
-    def __init__(self):
+    def __init__(self,uid):
         super(after_log,self).__init__()
+        self.uid = uid
         self.initUI()
 
     def initUI(self):
@@ -52,7 +53,7 @@ class after_log(QDialog):
 
 
     def book_func(self):
-        book = book_window()
+        book = book_window(self.uid)
         book.exec_()
 
 
@@ -61,9 +62,3 @@ class after_log(QDialog):
 
     def showtran_func(self):
         x = 5
-
-
-app = QApplication(sys.argv)
-start = after_log()
-start.show()
-app.exec_()
