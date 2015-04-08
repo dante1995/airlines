@@ -36,6 +36,8 @@
 #         self.idelay = QLineEdit()
 #         self.idelay.setPlaceholderText("Enter Delay Duration")
 #         self.temp = QLabel("")
+
+#         self.setGeometry(250,250,500,500)
 #
 #         self.fid.setFixedWidth(200)
 #         self.idate.setFixedWidth(200)

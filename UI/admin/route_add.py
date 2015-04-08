@@ -37,6 +37,8 @@ class Route_Add(QFrame):
         self.ito.setPlaceholderText("Enter Destination Airport")
         self.temp = QLabel("")
 
+        self.setGeometry(250,250,500,500)
+
         self.irt.setFixedWidth(200)
         self.isrc.setFixedWidth(200)
         self.ito.setFixedWidth(200)
@@ -89,7 +91,7 @@ class Route_Add(QFrame):
         source = str(self.isrc.text())
         destination = str(self.ito.text())
 
-        if(len(source)) == 0 or len(destination)==0:
+        if(len(source)) == 0 or len(destination)==0 or len(id_route)==0:
             message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
@@ -98,7 +100,7 @@ class Route_Add(QFrame):
         self.cursor.execute("select route_id from route")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i]) == id_route:
+            if str(result[i][0]) == id_route:
                 message = QMessageBox(QMessageBox.Warning,"Error Message","This id_route in already entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return

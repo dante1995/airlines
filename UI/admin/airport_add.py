@@ -1,4 +1,4 @@
-__author__ = 'sabya'
+__author__ = 'inzamam'
 
 
 from PyQt4.QtCore import *
@@ -39,6 +39,8 @@ class Airport_Add(QFrame):
         self.istate = QLineEdit()
         self.istate.setPlaceholderText("Enter State Name")
         self.temp = QLabel("")
+
+        self.setGeometry(250,250,500,500)
 
         self.iaid.setFixedWidth(200)
         self.ianame.setFixedWidth(200)
@@ -106,13 +108,13 @@ class Airport_Add(QFrame):
         self.cursor.execute("select airport_id from airport")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i]) == airport_id:
-                message = QMessageBox(QMessageBox.Warning,"Error Message","This room in airport id entered. Try Again",buttons = QMessageBox.Close)
+            if str(result[i][0]) == airport_id:
+                message = QMessageBox(QMessageBox.Warning,"Error Message","This airport id is already entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return
 
         try:
-            self.cursor.execute("insert into airport(airport_id,name,city,state) values('%s','%s','%s','%s')"%(airport_id,airport_name,city,state))
+            self.cursor.execute("insert into airport(airport_id,name,city) values('%s','%s','%s')"%(airport_id,airport_name,city))
             self.db.commit()
             self.reset_all()
         except:
