@@ -72,4 +72,3 @@ class show_flights(QDialog):
     def cancel_func(self):
         self.close()
         x=3
-
