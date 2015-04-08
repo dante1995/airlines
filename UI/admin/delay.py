@@ -8,8 +8,8 @@ import time
 import sys
 import datetime
 import time
-
-
+from datetime import *
+from PyQt4 import QtGui,QtCore
 class Delay(QFrame):
     def __init__(self):
         super(Delay,self).__init__()
@@ -37,6 +37,7 @@ class Delay(QFrame):
         self.idelay = QLineEdit()
         self.idelay.setPlaceholderText("Enter Delay Duration(in mins)")
         self.temp = QLabel("")
+        self.cal = QPushButton("CAL")
 
         self.setGeometry(250,250,500,500)
 
@@ -55,7 +56,8 @@ class Delay(QFrame):
         self.grid.addWidget(self.idate,1,1)
         self.grid.addWidget(self.delay,2,0)
         self.grid.addWidget(self.idelay,2,1)
-        self.grid.addWidget(self.temp,2,2)
+        # self.grid.addWidget(self.temp,2,2)
+        self.grid.addWidget(self.cal,1,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
@@ -81,11 +83,17 @@ class Delay(QFrame):
         self.connect(self.update,SIGNAL("clicked()"),self.entry)
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_all)
         self.connect(self.cancel,SIGNAL("clicked()"),self.canceli)
+        self.connect(self.cal,SIGNAL("clicked()"),self.cal_func)
 
+    def cal_func(self):
+        print "yo"
+        gui = Calendar()
+        gui.exec_()
+        self.idate.setText(str(gui.aweeklater))
 
     def canceli(self):
         self.db.close()
-        start.close()
+        self.close()
 
     def entry(self):
         id_flight = str(self.ifid.text())
@@ -147,8 +155,54 @@ class Delay(QFrame):
 
 
 
-app = QApplication(sys.argv)
-start = Delay()
-start.show()
-app.exec_()
-__author__ = 'root'
+class Calendar(QDialog):
+    """
+    A QCalendarWidget example
+    """
+
+    def __init__(self):
+        # create GUI
+        QtGui.QMainWindow.__init__(self)
+        self.setWindowTitle('Calendar widget')
+        # Set the window dimensions
+        self.resize(300,100)
+
+        # vertical layout for widgets
+        self.vbox = QtGui.QVBoxLayout()
+        self.setLayout(self.vbox)
+
+        # Create a calendar widget and add it to our layout
+        self.cal = QtGui.QCalendarWidget()
+        self.vbox.addWidget(self.cal)
+
+        # Create a label which we will use to show the date a week from now
+        self.lbl = QtGui.QLabel()
+        self.vbox.addWidget(self.lbl)
+
+        # Connect the clicked signal to the centre handler
+        self.connect(self.cal, QtCore.SIGNAL('selectionChanged()'), self.date_changed)
+
+    def date_changed(self):
+        """
+        Handler called when the date selection has changed
+        """
+        # Fetch the currently selected date, this is a QDate object
+        date = self.cal.selectedDate()
+
+        # This is a gives us the date contained in the QDate as a native
+        # python date[time] object
+        pydate = date.toPyDate()
+        # Calculate the date a week from now
+        sevendays = timedelta(days=7)
+        self.aweeklater = pydate
+#
+# def main():
+#
+#     app = QApplication(sys.argv)
+#     start = Delay()
+#     start.show()
+#     app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()

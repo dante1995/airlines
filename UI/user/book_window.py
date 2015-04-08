@@ -49,7 +49,7 @@ class book_window(QDialog):
 
         self.no_passengers = QLabel("No of passengers")
         self.ino_passengers = QLineEdit()
-        self.cal = QPushButton()
+        self.cal = QPushButton("CAL")
         self.temp = QLabel("")
 
 
