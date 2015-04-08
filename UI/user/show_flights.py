@@ -73,3 +73,12 @@ class show_flights(QDialog):
         self.close()
         x=3
 
+#
+# app = QApplication(sys.argv)
+# start = show_flights()
+# start.show()
+# app.exec_()
+#
+#
+# if __name__ == '__main__':
+#     main()
