@@ -54,19 +54,6 @@ class registration(QDialog):
         self.igender.addItem("Male")
         self.igender.addItem("Female")
 
-        self.temp = QLabel("")
-
-        self.iname.setFixedWidth(200)
-        self.iaddress.setFixedWidth(400)
-        self.imob.setFixedWidth(200)
-        self.iuname.setFixedWidth(200)
-        self.ipasswd.setFixedWidth(200)
-        self.iemail.setFixedWidth(200)
-        self.igender.setFixedWidth(100)
-
-        self.name.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.address.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.mob.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.uname.setAlignment(Qt.AlignRight|Qt.AlignCenter)
         self.passwd.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.email.setAlignment(Qt.AlignRight | Qt.AlignCenter)

@@ -15,15 +15,15 @@ class book_window(QDialog):
 
     def initUI(self):
 
-        while 1:
-            try:
-                self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-                break
-            except:
-                time.sleep(.1)
-                continue
+        # while 1:
+        #     try:
+        #         self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+        #         break
+        #     except:
+        #         time.sleep(.1)
+        #         continue
 
-        self.cursor = self.db.cursor()
+        # self.cursor = self.db.cursor()
 
         self.fro = QLabel("From")
         self.ifro = QLineEdit()
@@ -85,7 +85,13 @@ class book_window(QDialog):
         self.connect(self.reset,SIGNAL("clicked()"),self.reset_func)
 
     def book_func (self):
-        sw = show_flights()
+        self.no = self.ino_passengers.text()
+        self.des = self.idest.text()
+        self.src = self.ifro.text()
+        self.dt = self.idate.text()
+        sw = show_flights(self.no,self.des,self.src,self.dt)
+
+
         sw.exec_()
         print "yo"
     def reset_func(self):

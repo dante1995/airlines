@@ -10,10 +10,12 @@ import datetime
 from book_window import *
 from show_flights import *
 class passenger_entry(QDialog):
-    def __init__(self,id):
+    def __init__(self,id,no):
         super(passenger_entry,self).__init__()
-        self.id = id
+        self.id = str(id)
+        self.no = str(no)
         print "my id is: " + self.id
+        print "no in pass_entry = " + self.no
         self.initUI()
 
     def initUI(self):
@@ -29,8 +31,8 @@ class passenger_entry(QDialog):
         # self.cursor = self.db.cursor()
 
 
-        print "efvfdvfdgvdv"
-        print self.id
+        # print "efvfdvfdgvdv"
+        # print self.id
         self.grid = QGridLayout()
 
 
@@ -43,7 +45,7 @@ class passenger_entry(QDialog):
         self.setGeometry(250,250,500,500)
         # self.setLayout(self.grid)
         self.table = QTableWidget()
-        self.table.setRowCount(10)
+        self.table.setRowCount(int(self.no))
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels(QString("Name;Age;Gender").split(";"));
         for i in range(10):
@@ -68,36 +70,30 @@ class passenger_entry(QDialog):
         self.names = []
         self.ages = []
         self.genders = []
-        for i in range(10):
+        for i in range(int(self.no)):
             name = ""
             gender = ""
             age = ""
-            name = self.table.itemAt(i,0)
+            name = self.table.item(i,0)
             gender = self.table.item(i,2)
             age = self.table.item(i,1)
-            if (name) != None:
-                if(name != ""):
-                    self.names.append(str(name.text()))
-                    print str(name.text())
-                if(age!=""):
-                    self.ages.append(str(age.text()))
-                if(gender != ""):
-                    self.genders.append(str(gender.text()))
-        print self.names,self.ages,self.genders
+            print name,age,gender
+            print name.text(),age.text(),gender.text()
+        # print self.names,self.ages,self.genders
 
     def cancel_func(self):
         self.close()
         x=3
 
-#
-#
-# def main():
-#
-#     app = QApplication(sys.argv)
-#     start = passenger_entry()
-#     start.show()
-#     app.exec_()
-#
-#
-# if __name__ == '__main__':
-#     main()
+
+
+def main():
+
+    app = QApplication(sys.argv)
+    start = passenger_entry(2,4)
+    start.show()
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()
