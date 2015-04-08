@@ -115,17 +115,47 @@ class Schedule_Add(QFrame):
         flight_id = str(self.ifid.text())
         route_id = str(self.irid.text())
 
+        avail=0
+        self.cursor.execute("select flight_id,capacity from flight")
+        res=self.cursor.fetchall()
+        for j in range(len(res)):
+            if str(res[j][0])==flight_id:
+                avail=int(res[j][1])
 
         self.cursor.execute("select schedule_id from schedule")
         result = self.cursor.fetchall()
         for i in range(len(result)):
-            if str(result[i]) == schedule_id:
+            if str(result[i][0]) == schedule_id:
                 message = QMessageBox(QMessageBox.Warning,"Error Message","This schedule id is already entered. Try Again",buttons = QMessageBox.Close)
                 message.exec_()
                 return
 
+        flag=0
+        self.cursor.execute("select route_id from route")
+        result1 = self.cursor.fetchall()
+        for i in range(len(result1)):
+            if str(result1[i][0]) == route_id:
+                flag=1
+                break
+        if(flag==0):
+            message = QMessageBox(QMessageBox.Warning,"Error Message","This route id is not present in the database. Try Again",buttons = QMessageBox.Close)
+            message.exec_()
+            return
+
+        flag1=0
+        self.cursor.execute("select flight_id from flight")
+        result2 = self.cursor.fetchall()
+        for i in range(len(result2)):
+            if str(result2[i][0]) == flight_id:
+                flag1=1
+                break
+        if(flag1==0):
+            message = QMessageBox(QMessageBox.Warning,"Error Message","This flight id is not present in the database. Try Again",buttons = QMessageBox.Close)
+            message.exec_()
+            return
+
         try:
-            self.cursor.execute("insert into schedule(schedule_id,flight_date,arrival,departure,flight_id,route_id) values('%s','%s','%s','%s','%s','%s')"%(schedule_id,flight_date,arr_time,dep_time,flight_id,route_id))
+            self.cursor.execute("insert into schedule(schedule_id,flight_date,arrival,departure,flight_id,route_id,available) values('%s','%s','%s','%s','%s','%s','%s')"%(schedule_id,flight_date,arr_time,dep_time,flight_id,route_id,avail))
             self.db.commit()
             self.reset_all()
         except:

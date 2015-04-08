@@ -17,26 +17,25 @@ class View_Userlist(QDialog):
 
     def initUI(self):
 
-        # while 1:
-        # try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
 
-        # self.cursor = self.db.cursor()
-        flights = ['dasd','fdgvdf ','dfewrf']
-        source = ['dsv','fv','fv']
-        #dest = ['vcfsd','vd','dsvc']
+        self.cursor = self.db.cursor()
 
+        self.cursor.execute("select user_id,count(*) from user natural join user_book natural join booking group by user_id")
+        res=self.cursor.fetchall()
+        size=len(res)
 
         self.grid = QGridLayout()
-        size = len(flights)
 
 
-        self.ok = QPushButton("Done")
-        self.cancel = QPushButton("Cancel")
+        self.ok = QPushButton("Back")
+        self.cancel = QPushButton("Close")
 
         self.connect(self.ok,SIGNAL("clicked()"),self.ok_func)
         self.connect(self.cancel,SIGNAL("clicked()"),self.cancel_func)
@@ -52,11 +51,8 @@ class View_Userlist(QDialog):
         self.table.resizeColumnsToContents()
 
         for i in range(size):
-            self.table.setItem(i,0,QTableWidgetItem(flights[i]))
-            self.table.setItem(i,1,QTableWidgetItem(source[i]))
-            #self.table.setItem(i,2,QTableWidgetItem(dest[i]))
-            #self.table.setItem(i,3,QTableWidgetItem("100"))
-            #self.table.setItem(i,4,QTableWidgetItem("10:00"))
+            self.table.setItem(i,0,QTableWidgetItem(res[i][0]))
+            self.table.setItem(i,1,QTableWidgetItem(str(res[i][1])))
 
 
         self.grid.addWidget(self.table,0,0,1,-1)
@@ -72,7 +68,6 @@ class View_Userlist(QDialog):
         print "ticket"
     def cancel_func(self):
         self.close()
-        x=3
 
 app = QApplication(sys.argv)
 start = View_Userlist()

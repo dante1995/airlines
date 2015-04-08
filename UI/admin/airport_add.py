@@ -35,9 +35,9 @@ class Airport_Add(QFrame):
         self.city = QLabel("City")
         self.icity = QLineEdit()
         self.icity.setPlaceholderText("Enter City Name")
-        self.state = QLabel("State")
-        self.istate = QLineEdit()
-        self.istate.setPlaceholderText("Enter State Name")
+        # self.state = QLabel("State")
+        # self.istate = QLineEdit()
+        # self.istate.setPlaceholderText("Enter State Name")
         self.temp = QLabel("")
 
         self.setGeometry(250,250,500,500)
@@ -45,12 +45,12 @@ class Airport_Add(QFrame):
         self.iaid.setFixedWidth(200)
         self.ianame.setFixedWidth(200)
         self.icity.setFixedWidth(200)
-        self.istate.setFixedWidth(200)
+        #self.istate.setFixedWidth(200)
 
         self.aid.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.aname.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.city.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.state.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        #self.state.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         self.grid = QGridLayout()
         self.grid.addWidget(self.aid,0,0)
@@ -59,9 +59,9 @@ class Airport_Add(QFrame):
         self.grid.addWidget(self.ianame,1,1)
         self.grid.addWidget(self.city,2,0)
         self.grid.addWidget(self.icity,2,1)
-        self.grid.addWidget(self.state,3,0)
-        self.grid.addWidget(self.istate,3,1)
-        self.grid.addWidget(self.temp,3,2)
+        #self.grid.addWidget(self.state,3,0)
+        #self.grid.addWidget(self.istate,3,1)
+        self.grid.addWidget(self.temp,2,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
@@ -97,9 +97,9 @@ class Airport_Add(QFrame):
         airport_id = str(self.iaid.text())
         airport_name = str(self.ianame.text())
         city = str(self.icity.text())
-        state = str(self.istate.text())
+        #state = str(self.istate.text())
 
-        if(len(airport_name) == 0 or len(city)==0 or len(state)==0):
+        if(len(airport_name) == 0 or len(city)==0 ):
             message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
@@ -130,7 +130,7 @@ class Airport_Add(QFrame):
         self.iaid.clear()
         self.ianame.clear()
         self.icity.clear()
-        self.istate.clear()
+        #self.istate.clear()
 
 
 

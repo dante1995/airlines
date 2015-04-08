@@ -29,9 +29,9 @@ class Flight_Add(QFrame):
         self.fid = QLabel("Flight ID")
         self.ifid = QLineEdit()
         self.ifid.setPlaceholderText("Enter Flight ID")
-        self.fname = QLabel("Flight Name")
-        self.ifname = QLineEdit()
-        self.ifname.setPlaceholderText("Enter Flight Name")
+        # self.fname = QLabel("Flight Name")
+        # self.ifname = QLineEdit()
+        # self.ifname.setPlaceholderText("Enter Flight Name")
         self.aline = QLabel("Airline")
         self.ialine = QLineEdit()
         self.ialine.setPlaceholderText("Enter Airline Name")
@@ -43,25 +43,25 @@ class Flight_Add(QFrame):
         self.setGeometry(250,250,500,500)
 
         self.ifid.setFixedWidth(200)
-        self.ifname.setFixedWidth(200)
+        #self.ifname.setFixedWidth(200)
         self.ialine.setFixedWidth(200)
         self.icap.setFixedWidth(200)
 
         self.fid.setAlignment(Qt.AlignRight | Qt.AlignCenter)
-        self.fname.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        #self.fname.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.aline.setAlignment(Qt.AlignRight | Qt.AlignCenter)
         self.cap.setAlignment(Qt.AlignRight | Qt.AlignCenter)
 
         self.grid = QGridLayout()
         self.grid.addWidget(self.fid,0,0)
         self.grid.addWidget(self.ifid,0,1)
-        self.grid.addWidget(self.fname,1,0)
-        self.grid.addWidget(self.ifname,1,1)
-        self.grid.addWidget(self.aline,2,0)
-        self.grid.addWidget(self.ialine,2,1)
-        self.grid.addWidget(self.cap,3,0)
-        self.grid.addWidget(self.icap,3,1)
-        self.grid.addWidget(self.temp,3,2)
+        #self.grid.addWidget(self.fname,1,0)
+        #self.grid.addWidget(self.ifname,1,1)
+        self.grid.addWidget(self.aline,1,0)
+        self.grid.addWidget(self.ialine,1,1)
+        self.grid.addWidget(self.cap,2,0)
+        self.grid.addWidget(self.icap,2,1)
+        self.grid.addWidget(self.temp,2,2)
 
         self.hbox = QHBoxLayout()
         self.reset = QPushButton("Reset")
@@ -95,11 +95,11 @@ class Flight_Add(QFrame):
 
     def entry(self):
         id_flight = str(self.ifid.text())
-        flight_name = str(self.ifname.text())
+        #flight_name = str(self.ifname.text())
         airline = str(self.ialine.text())
         capacity = str(self.icap.text())
 
-        if(len(flight_name) == 0 or len(airline))==0:
+        if( len(airline))==0:
             message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
             message.exec_()
             return
@@ -118,7 +118,7 @@ class Flight_Add(QFrame):
                 return
 
         try:
-            self.cursor.execute("insert into flight(flight_id,airline,capacity,available) values('%s','%s','%s',%s)"%(id_flight,airline,capacity,capacity))
+            self.cursor.execute("insert into flight(flight_id,airline,capacity) values('%s','%s','%s')"%(id_flight,airline,capacity))
             self.db.commit()
             self.reset_all()
         except:
@@ -132,7 +132,7 @@ class Flight_Add(QFrame):
 
     def reset_all(self):
         self.ifid.clear()
-        self.ifname.clear()
+        #self.ifname.clear()
         self.ialine.clear()
         self.icap.clear()
 
