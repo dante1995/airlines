@@ -15,15 +15,15 @@ class book_window(QDialog):
 
     def initUI(self):
 
-        # while 1:
-        #     try:
-        #         self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
-        #         break
-        #     except:
-        #         time.sleep(.1)
-        #         continue
+        while 1:
+            try:
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
+                break
+            except:
+                time.sleep(.1)
+                continue
 
-        # self.cursor = self.db.cursor()
+        self.cursor = self.db.cursor()
 
         self.fro = QLabel("From")
         self.ifro = QLineEdit()
@@ -99,6 +99,13 @@ class book_window(QDialog):
         self.idest.clear()
         self.idate.clear()
         self.ino_passengers.clear()
+
+    def get_data(self,model):
+
+        self.cursor.execute("select distinct city from airport;")
+        result = self.cursor.fetchall()
+        print result
+
 
 def main():
 
