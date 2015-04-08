@@ -28,15 +28,21 @@ class after_log(QDialog):
         self.book = QPushButton("Book Ticket")
         self.cancel = QPushButton("Cancel Ticket")
         self.showtran = QPushButton("Show Transactions")
+        self.temp = QLabel("")
 
         self.book.setStyleSheet("color: black; background-color:gray")
         self.cancel.setStyleSheet("color: black; background-color:gray")
         self.showtran.setStyleSheet("color: black; background-color:gray")
 
         self.grid = QGridLayout()
-        self.grid.addWidget(self.book,0,0)
-        self.grid.addWidget(self.cancel,1,0)
-        self.grid.addWidget(self.showtran,2,0)
+        self.grid.addWidget(self.temp,0,1)
+        self.grid.addWidget(self.temp,3,1)
+
+        self.grid.addWidget(self.book,1,1)
+        self.grid.addWidget(self.cancel,2,1)
+        self.grid.addWidget(self.showtran,3,1)
+        self.grid.addWidget(self.temp,4,0)
+        self.grid.addWidget(self.temp,4,2)
 
         self.connect(self.book,SIGNAL("clicked()"),self.book_func)
         self.connect(self.cancel,SIGNAL("clicked()"),self.cancel_func)
@@ -57,3 +63,7 @@ class after_log(QDialog):
         x = 5
 
 
+app = QApplication(sys.argv)
+start = after_log()
+start.show()
+app.exec_()
