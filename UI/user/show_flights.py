@@ -100,6 +100,7 @@ class show_flights(QDialog):
         print schedule_id
         pass_ent = passenger_entry(self.uid,schedule_id, self.no)
         pass_ent.exec_()
+        self.close()
         # print "ticket"
 
     def cancel_func(self):

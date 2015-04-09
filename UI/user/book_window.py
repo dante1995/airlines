@@ -89,7 +89,7 @@ class book_window(QDialog):
         self.vbox = QVBoxLayout()
         self.vbox.addLayout(self.grid)
         self.vbox.addLayout(self.hbox)
-
+        self.setGeometry(250,250,500,500)
         self.setLayout(self.vbox)
 
 

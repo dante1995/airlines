@@ -49,19 +49,21 @@ class after_log(QDialog):
         self.connect(self.book,SIGNAL("clicked()"),self.book_func)
         self.connect(self.cancel,SIGNAL("clicked()"),self.cancel_func)
         self.connect(self.showtran,SIGNAL("clicked()"),self.showtran_func)
-
+        self.setGeometry(250,250,500,500)
         self.setLayout(self.grid)
 
 
     def book_func(self):
+        self.close()
         book = book_window(self.uid)
         book.exec_()
 
-
     def cancel_func(self):
+        self.close()
         can = cancel_window(self.uid)
         can.exec_()
 
     def showtran_func(self):
+        self.close()
         book_hist = book_history(self.uid)
         book_hist.exec_()

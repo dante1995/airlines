@@ -10,6 +10,8 @@ import sys
 import datetime
 #from book_window import *
 #from passenger_entry import *
+
+
 class View_Reservations(QDialog):
     def __init__(self):
         super(View_Reservations,self).__init__()
@@ -69,9 +71,9 @@ class View_Reservations(QDialog):
         print "ticket"
     def cancel_func(self):
         self.close()
-
-
-app = QApplication(sys.argv)
-start = View_Reservations()
-start.show()
-app.exec_()
+#
+#
+# app = QApplication(sys.argv)
+# start = View_Reservations()
+# start.show()
+# app.exec_()

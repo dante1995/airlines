@@ -10,7 +10,7 @@ import datetime
 import time
 from datetime import *
 from PyQt4 import QtGui,QtCore
-class Delay(QFrame):
+class Delay(QDialog):
     def __init__(self):
         super(Delay,self).__init__()
         self.initUI()

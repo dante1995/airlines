@@ -7,7 +7,8 @@ import sys
 import datetime
 from registration import *
 from after_log import *
-# from UI.admin.start import*
+from UI import *
+from UI.admin.start import *
 
 class user_start(QFrame):
     def __init__(self):
@@ -18,7 +19,7 @@ class user_start(QFrame):
 
         while 1:
             try:
-                self.db = MySQLdb.connect("10.5.18.66","12CS10042","btech12","12CS10042")
+                self.db = MySQLdb.connect("10.5.18.66","12CS10041","btech12","12CS10041")
                 break
             except:
                 time.sleep(.1)
@@ -62,6 +63,7 @@ class user_start(QFrame):
         self.vbox.addLayout(self.grid)
         self.vbox.addLayout(self.hbox)
 
+        self.setGeometry(250,250,500,500)
         self.setLayout(self.vbox)
 
 
@@ -69,10 +71,35 @@ class user_start(QFrame):
         self.connect(self.signup,SIGNAL("clicked()"),self.signup_func)
 
     def login_func (self):
-        print self.ipassword.text()
+
+        # print self.ipassword.text()
         uid = str(self.iid.text())
-        af = after_log(uid)
-        af.exec_()
+        passwd = str(self.ipassword.text())
+
+        sql = "select user_id, password from user;"
+        self.cursor.execute(sql)
+        res = self.cursor.fetchall()
+
+        if(uid == "admin" and passwd == "123"):
+            adm = Start()
+            adm.exec_()
+            self.close()
+
+        else:
+            flag = 0
+            for x in res:
+                if(x[0] == uid and x[1] == passwd):
+                    flag = 1
+            if flag:
+                af = after_log(uid)
+                af.exec_()
+                self.close()
+            else:
+                message = QMessageBox(QMessageBox.Warning,"Invalid password","Incorrect password!!! try again",buttons = QMessageBox.Close)
+                message.exec_()
+                self.ipassword.clear()
+                self.iid.clear()
+
         self.db.close()
 
 

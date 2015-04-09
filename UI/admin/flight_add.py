@@ -9,7 +9,7 @@ import sys
 import datetime
 
 
-class Flight_Add(QFrame):
+class Flight_Add(QDialog):
     def __init__(self):
         super(Flight_Add,self).__init__()
         self.initUI()
@@ -91,7 +91,7 @@ class Flight_Add(QFrame):
 
     def canceli(self):
         self.db.close()
-        start.close()
+        self.close()
 
     def entry(self):
         id_flight = str(self.ifid.text())
@@ -137,8 +137,8 @@ class Flight_Add(QFrame):
         self.icap.clear()
 
 
-
-app = QApplication(sys.argv)
-start = Flight_Add()
-start.show()
-app.exec_()
+#
+# app = QApplication(sys.argv)
+# start = Flight_Add()
+# start.show()
+# app.exec_()

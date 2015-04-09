@@ -69,7 +69,7 @@ class View_Userlist(QDialog):
     def cancel_func(self):
         self.close()
 
-app = QApplication(sys.argv)
-start = View_Userlist()
-start.show()
-app.exec_()
+# app = QApplication(sys.argv)
+# start = View_Userlist()
+# start.show()
+# app.exec_()

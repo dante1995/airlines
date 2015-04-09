@@ -135,6 +135,7 @@ class passenger_entry(QDialog):
         self.db.commit()
         tick = ticket(booking_id,self.id)
         tick.exec_()
+        self.close()
 
     def cancel_func(self):
         self.close()

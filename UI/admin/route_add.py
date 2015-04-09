@@ -9,7 +9,7 @@ import sys
 import datetime
 
 
-class Route_Add(QFrame):
+class Route_Add(QDialog):
     def __init__(self):
         super(Route_Add,self).__init__()
         self.initUI()
@@ -84,7 +84,7 @@ class Route_Add(QFrame):
 
     def canceli(self):
         self.db.close()
-        start.close()
+        self.close()
 
     def entry(self):
         id_route = str(self.irt.text())
@@ -124,8 +124,8 @@ class Route_Add(QFrame):
         self.ito.clear()
 
 
-
-app = QApplication(sys.argv)
-start = Route_Add()
-start.show()
-app.exec_()
+#
+# app = QApplication(sys.argv)
+# start = Route_Add()
+# start.show()
+# app.exec_()

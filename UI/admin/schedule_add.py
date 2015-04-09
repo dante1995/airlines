@@ -9,7 +9,7 @@ import sys
 import datetime
 
 
-class Schedule_Add(QFrame):
+class Schedule_Add(QDialog):
     def __init__(self):
         super(Schedule_Add,self).__init__()
         self.initUI()
@@ -105,7 +105,7 @@ class Schedule_Add(QFrame):
 
     def canceli(self):
         self.db.close()
-        start.close()
+        self.close()
 
     def entry(self):
         schedule_id = str(self.isid.text())
@@ -176,8 +176,8 @@ class Schedule_Add(QFrame):
         self.irid.clear()
 
 
-
-app = QApplication(sys.argv)
-start = Schedule_Add()
-start.show()
-app.exec_()
+#
+# app = QApplication(sys.argv)
+# start = Schedule_Add()
+# start.show()
+# app.exec_()

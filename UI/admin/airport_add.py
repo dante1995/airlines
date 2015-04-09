@@ -9,7 +9,7 @@ import sys
 import datetime
 
 
-class Airport_Add(QFrame):
+class Airport_Add(QDialog):
     def __init__(self):
         super(Airport_Add,self).__init__()
         self.initUI()
@@ -91,7 +91,7 @@ class Airport_Add(QFrame):
 
     def canceli(self):
         self.db.close()
-        start.close()
+        self.close()
 
     def entry(self):
         airport_id = str(self.iaid.text())
@@ -133,8 +133,8 @@ class Airport_Add(QFrame):
         #self.istate.clear()
 
 
-
-app = QApplication(sys.argv)
-start = Airport_Add()
-start.show()
-app.exec_()
+#
+# app = QApplication(sys.argv)
+# start = Airport_Add()
+# start.show()
+# app.exec_()

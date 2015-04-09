@@ -6,9 +6,15 @@ import MySQLdb
 import time
 import sys
 import datetime
+from route_add import *
+from flight_add import *
+from delay import *
+from airport_add import *
+from view_reservations import *
+from view_userlist import *
+from schedule_add import *
 
-
-class Start(QFrame):
+class Start(QDialog):
     def __init__(self):
         super(Start,self).__init__()
         self.initUI()
@@ -36,12 +42,15 @@ class Start(QFrame):
         self.userlist = QPushButton("View Userlist")
         self.delay = QPushButton("Delay")
         self.airport = QPushButton("Add Airport")
+        self.schedule = QPushButton("Add Schedule")
         self.route.setStyleSheet("color: black; background-color:gray")
         self.flight.setStyleSheet("color: black; background-color:gray")
         self.reservation.setStyleSheet("color: black; background-color:gray")
         self.userlist.setStyleSheet("color: black; background-color:gray")
         self.delay.setStyleSheet("color: black; background-color:gray")
         self.airport.setStyleSheet("color: black; background-color:gray")
+        self.schedule.setStyleSheet("color: black; background-color:gray")
+
         temp = QLabel("")
 
         #self.vbox.addStretch(1)
@@ -52,6 +61,8 @@ class Start(QFrame):
         self.grid.addWidget(self.userlist,3,1)
         self.grid.addWidget(self.delay,4,1)
         self.grid.addWidget(self.airport,5,1)
+        self.grid.addWidget(self.schedule,6,1)
+
         self.grid.addWidget(temp,0,0)
         self.grid.addWidget(temp,0,2)
 
@@ -71,70 +82,43 @@ class Start(QFrame):
         self.setLayout(self.vbox)
 
 
-        self.connect(self.route,SIGNAL("clicked()"),self.entry)
-        self.connect(self.flight,SIGNAL("clicked()"),self.reset_all)
-        self.connect(self.reservation,SIGNAL("clicked()"),self.canceli)
-        self.connect(self.userlist,SIGNAL("clicked()"),self.entry)
-        self.connect(self.delay,SIGNAL("clicked()"),self.entry)
-        self.connect(self.airport,SIGNAL("clicked()"),self.entry)
+        self.connect(self.route,SIGNAL("clicked()"),self.add_route_f)
+        self.connect(self.flight,SIGNAL("clicked()"),self.add_flight_f)
+        self.connect(self.reservation,SIGNAL("clicked()"),self.view_res_f)
+        self.connect(self.userlist,SIGNAL("clicked()"),self.view_ul_f)
+        self.connect(self.delay,SIGNAL("clicked()"),self.add_delay_f)
+        self.connect(self.airport,SIGNAL("clicked()"),self.add_airp_f)
+        self.connect(self.schedule,SIGNAL("clicked()"),self.add_sch_f)
 
+    def add_route_f(self):
+        r_add = Route_Add()
+        r_add.exec_()
 
-    def canceli(self):
-        self.db.close()
-        start.close()
+    def add_flight_f(self):
+        r_fli = Flight_Add()
+        r_fli.exec_()
 
-    def entry(self):
-        room = str(self.iroomno.text())
-        building = str(self.ibuilding.text())
-        dept = str(self.idept.text())
-        prps = str(self.iprps.currentText())
+    def view_res_f(self):
+        resv = View_Reservations()
+        resv.exec_()
 
-        if(len(room)) == 0 or len(building)==0:
-            message = QMessageBox(QMessageBox.Warning,"Error Message","Please enter Full details. Try Again",buttons = QMessageBox.Close)
-            message.exec_()
-            return
+    def view_ul_f(self):
+        ul = View_Userlist()
+        ul.exec_()
 
-        if(room.isdigit() == 0):
-            message = QMessageBox(QMessageBox.Warning,"Error Message","Room must be an integer. Try Again",buttons = QMessageBox.Close)
-            message.exec_()
-            return
-        if(prps == "select"):
-            message = QMessageBox(QMessageBox.Warning,"Error Message","Please select Purpose of this room. Try Again",buttons = QMessageBox.Close)
-            message.exec_()
-            return
-        if len(dept) == 0:
-            dept = "NULL"
+    def add_delay_f(self):
+        delay = Delay()
+        delay.exec_()
 
-        self.cursor.execute("select RoomNo,Building from Room")
-        result = self.cursor.fetchall()
-        for i in range(len(result)):
-            if str(result[i][0]) == room and str(result[i][1]) == building:
-                message = QMessageBox(QMessageBox.Warning,"Error Message","This room in already entered. Try Again",buttons = QMessageBox.Close)
-                message.exec_()
-                return
+    def add_airp_f(self):
+        air = Airport_Add()
+        air.exec_()
 
-        try:
-            self.cursor.execute("insert into Room(RoomNo,Building,Department,Purpose) values('%s','%s','%s','%s')"%(room,building,dept,prps))
-            self.db.commit()
-            self.reset_all()
-        except:
-            self.db.rollback()
-            message = QMessageBox(QMessageBox.Warning,"Prescribe Message","Some error occured. Try Again",buttons = QMessageBox.Close)
-            message.exec_()
+    def add_sch_f(self):
+        sch = Schedule_Add()
+        sch.exec_()
 
-
-
-
-
-    def reset_all(self):
-        self.iroomno.clear()
-        self.ibuilding.clear()
-        self.iprps.setCurrentIndex(0)
-        self.idept.clear()
-
-
-
-app = QApplication(sys.argv)
-start = Start()
-start.show()
-app.exec_()
+# app = QApplication(sys.argv)
+# start = Start()
+# start.show()
+# app.exec_()
